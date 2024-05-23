@@ -1,7 +1,6 @@
 import { registrarPersona } from "./promesa.js";
 window.addEventListener("load",()=>{
     document.getElementById("btnRegistrar").addEventListener("click",registrar);
-
 })
 
 const registrar = ()=>{
@@ -13,6 +12,9 @@ const registrar = ()=>{
     let objeto = {nombre:vNombre}
     //envio a una funcion que registra
     console.log(objeto)
-    registrarPersona(objeto);
-
+    registrarPersona(objeto).then(()=>{
+        alert("Se registra con existo");
+    }).catch((error)=>{
+        console.log(error);
+    });
 }
