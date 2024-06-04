@@ -1,7 +1,8 @@
-import { obtenerPersonas, registrarPersona } from "./promesa.js";
+import { actualizarPersona, eliminarPersona, obtenerPersonas, registrarPersona } from "./promesa.js";
 window.addEventListener("load",()=>{
     document.getElementById("btnRegistrar").addEventListener("click",registrar);
     cargarDatos();
+    document.getElementById("btnActualizar").addEventListener("click",actualizar);
 })
 
 const registrar = ()=>{
@@ -12,6 +13,7 @@ let eRut = document.getElementById("rut");
 let eCorreo = document.getElementById("correo");
 let efdn = document.getElementById("fdn");
 let eEdad = document.getElementById("edad");
+let egenero = document.querySelector('input[name="G"]:checked')
 //recupero valor de elemento
 let vNombre = eNombre.value;
 let vApellido= eApellido.value;
@@ -19,8 +21,9 @@ let vRut = eRut.value;
 let vCorreo = eCorreo.value;
 let vfdn = efdn.value;
 let vEdad = eEdad.value;
+let vGenero = egenero.value;
 //crea un objeto con los datos recuperados
-let objeto = {nombre:vNombre,apellido:vApellido,rut:vRut,correo:vCorreo,fecha:vfdn,edad:vEdad}
+let objeto = {nombre:vNombre,apellido:vApellido,rut:vRut,correo:vCorreo,fecha:vfdn,edad:vEdad,genero:vGenero}
 //envio a una funcion que registra
 registrarPersona(objeto).then(()=>{
 alert("Se registro exitosamente");
@@ -44,6 +47,7 @@ const cargarDatos = ()=>{
             estructuras += "<td>"+p.correo+"</td>"
             estructuras += "<td>"+p.edad+"</td>"
             estructuras += "<td>"+p.fecha+"</td>"
+            estructuras += "<td>"+p.genero+"</td>"
             estructuras += "<td><button id='UPD"+p.id+"'>Actualizar</button></td>"
             estructuras += "<td><button id='DEL"+p.id+"'>Eliminar</button></td>"
             estructuras += "</tr>";
@@ -59,9 +63,56 @@ const cargarDatos = ()=>{
                 document.getElementById("UPDcorreo").value = p.correo;
                 document.getElementById("UPDedad").value = p.edad;
                 document.getElementById("UPDfdn").value = p.fecha;
+                document.querySelector('input[name="G"]:checked').value = p.genero
                 document.getElementById("btnActualizar").value = p.id
+            });
+            let btnEliminar = document.getElementById("DEL"+p.id);
+            btnEliminar.addEventListener("click",()=>{
+                if(confirm("Desea eliminar a:\n"+p.nombre+" "+p.apellido)){
+                    console.log("Vamos a eliminar")
+                    eliminarPersona(p.id).then(()=>{
+                        alert("Eliminaste con exito");
+                        cargarDatos();
+                    }).catch((e)=>{
+                        console.log(e)
+                    })
+                }else{
+                    console.log("Cancelaste la")
+                }
             })
         })
     })
-    
 };
+
+const actualizar=()=>{
+    //Recuperar los campos del formulario
+    let eNombre = document.getElementById("UPDnombre");
+    let eApellido = document.getElementById("UPDapellido");
+    let eRut = document.getElementById("UPDrut");
+    let eCorreo = document.getElementById("UPDcorreo");
+    let efdn = document.getElementById("UPDfdn");
+    let eEdad = document.getElementById("UPDedad");
+    //recupero valor de elemento
+    let vNombre = eNombre.value;
+    let vApellido= eApellido.value;
+    let vRut = eRut.value;
+    let vCorreo = eCorreo.value;
+    let vfdn = efdn.value;
+    let vEdad = eEdad.value;
+    //crea un objeto con los datos recuperados
+    let objeto = {nombre:vNombre,apellido:vApellido,rut:vRut,correo:vCorreo,fecha:vfdn,edad:vEdad}
+
+    let id = document.getElementById("btnActualizar").value
+    //envio el objeto y el id a promesas
+    document.getElementById("btnActualizar").disabled = "True";
+
+    actualizarPersona(objeto,id).then(()=>{
+        alert("Se actualiza con exito");
+        cargarDatos();
+    }).catch((e)=>{
+        console.log(e)
+    }).finally(()=>{
+        document.getElementById("btnActualizar").disabled = "";
+    })
+};
+
