@@ -63,7 +63,6 @@ const cargarDatos = ()=>{
                 document.getElementById("UPDcorreo").value = p.correo;
                 document.getElementById("UPDedad").value = p.edad;
                 document.getElementById("UPDfdn").value = p.fecha;
-                document.querySelector('input[name="G"]:checked').value = p.genero
                 document.getElementById("btnActualizar").value = p.id
             });
             let btnEliminar = document.getElementById("DEL"+p.id);
@@ -86,12 +85,13 @@ const cargarDatos = ()=>{
 
 const actualizar=()=>{
     //Recuperar los campos del formulario
-    let eNombre = document.getElementById("UPDnombre");
-    let eApellido = document.getElementById("UPDapellido");
-    let eRut = document.getElementById("UPDrut");
-    let eCorreo = document.getElementById("UPDcorreo");
-    let efdn = document.getElementById("UPDfdn");
-    let eEdad = document.getElementById("UPDedad");
+    let eNombre = document.getElementById("nombre");
+    let eApellido = document.getElementById("apellido");
+    let eRut = document.getElementById("rut");
+    let eCorreo = document.getElementById("correo");
+    let efdn = document.getElementById("fdn");
+    let eEdad = document.getElementById("edad");
+    let egenero = document.querySelector('input[name="G"]:checked')
     //recupero valor de elemento
     let vNombre = eNombre.value;
     let vApellido= eApellido.value;
@@ -99,8 +99,9 @@ const actualizar=()=>{
     let vCorreo = eCorreo.value;
     let vfdn = efdn.value;
     let vEdad = eEdad.value;
+    let vGenero = egenero.value;
     //crea un objeto con los datos recuperados
-    let objeto = {nombre:vNombre,apellido:vApellido,rut:vRut,correo:vCorreo,fecha:vfdn,edad:vEdad}
+    let objeto = {nombre:vNombre,apellido:vApellido,rut:vRut,correo:vCorreo,fecha:vfdn,edad:vEdad,genero:vGenero}
 
     let id = document.getElementById("btnActualizar").value
     //envio el objeto y el id a promesas
